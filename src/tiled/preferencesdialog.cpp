@@ -61,11 +61,11 @@ PreferencesDialog::PreferencesDialog(QWidget *parent)
     mUi->languageCombo->insertItem(0, tr("System default"));
 
     mUi->styleCombo->addItems(QStringList()
-                              << QApplication::translate("PreferencesDialog", "Native")
-                              << QApplication::translate("PreferencesDialog", "Tiled Fusion"));
+                              << QApplication::translate("PreferencesDialog", "Tiled Fusion")
+                              << QApplication::translate("PreferencesDialog", "Native"));
 
-    mUi->styleCombo->setItemData(0, Preferences::SystemDefaultStyle);
-    mUi->styleCombo->setItemData(1, Preferences::TiledStyle);
+    mUi->styleCombo->setItemData(0, Preferences::TiledStyle);
+    mUi->styleCombo->setItemData(1, Preferences::SystemDefaultStyle);
 
     PluginListModel *pluginListModel = new PluginListModel(this);
     QSortFilterProxyModel *pluginProxyModel = new QSortFilterProxyModel(this);
