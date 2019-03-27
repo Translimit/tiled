@@ -731,6 +731,14 @@ void MapDocument::removeLayers(const QList<Layer *> &layers)
 }
 
 /**
+ * \see LayerModel::toggleVisibleLayer
+ */
+void MapDocument::toggleVisibleLayer(Layer *layer)
+{
+    mLayerModel->setLayerVisible(layer, !layer->isVisible());
+}
+
+/**
  * \see LayerModel::toggleOtherLayers
  */
 void MapDocument::toggleOtherLayers(const QList<Layer *> &layers)

@@ -124,6 +124,11 @@ MapDocumentActionHandler::MapDocumentActionHandler(QObject *parent)
     mActionMoveLayersDown->setIcon(
             QIcon(QLatin1String(":/images/16x16/go-down.png")));
 
+    mActionToggleVisibleLayer = new QAction(this);
+    mActionToggleVisibleLayer->setShortcut(tr("V"));
+    mActionToggleVisibleLayer->setIcon(
+            QIcon(QLatin1String(":/images/16x16/show_hide_others.png")));
+
     mActionToggleOtherLayers = new QAction(this);
     mActionToggleOtherLayers->setShortcut(tr("Ctrl+Shift+H"));
     mActionToggleOtherLayers->setIcon(
@@ -171,6 +176,7 @@ MapDocumentActionHandler::MapDocumentActionHandler(QObject *parent)
     connect(mActionRemoveLayers, &QAction::triggered, this, &MapDocumentActionHandler::removeLayers);
     connect(mActionMoveLayersUp, &QAction::triggered, this, &MapDocumentActionHandler::moveLayersUp);
     connect(mActionMoveLayersDown, &QAction::triggered, this, &MapDocumentActionHandler::moveLayersDown);
+    connect(mActionToggleVisibleLayer, &QAction::triggered, this, &MapDocumentActionHandler::toggleVisibleLayer);
     connect(mActionToggleOtherLayers, &QAction::triggered, this, &MapDocumentActionHandler::toggleOtherLayers);
     connect(mActionToggleLockOtherLayers, &QAction::triggered, this, &MapDocumentActionHandler::toggleLockOtherLayers);
     connect(mActionLayerProperties, &QAction::triggered, this, &MapDocumentActionHandler::layerProperties);
@@ -211,6 +217,7 @@ void MapDocumentActionHandler::retranslateUi()
     mActionSelectNextLayer->setText(tr("Select &Next Layer"));
     mActionMoveLayersUp->setText(tr("R&aise Layers"));
     mActionMoveLayersDown->setText(tr("&Lower Layers"));
+    mActionToggleVisibleLayer->setText(tr("&Visible/Unvisible Layer"));
     mActionToggleOtherLayers->setText(tr("Show/&Hide all Other Layers"));
     mActionToggleLockOtherLayers->setText(tr("Lock/&Unlock all Other Layers"));
     mActionLayerProperties->setText(tr("Layer &Properties..."));
@@ -674,6 +681,12 @@ void MapDocumentActionHandler::removeLayers()
         mMapDocument->removeLayers(mMapDocument->selectedLayers());
 }
 
+void MapDocumentActionHandler::toggleVisibleLayer()
+{
+    if (mMapDocument)
+        mMapDocument->toggleVisibleLayer(mMapDocument->currentLayer());
+}
+
 void MapDocumentActionHandler::toggleOtherLayers()
 {
     if (mMapDocument)
@@ -769,6 +782,7 @@ void MapDocumentActionHandler::updateActions()
     mActionSelectNextLayer->setEnabled(hasNextLayer);
     mActionMoveLayersUp->setEnabled(canMoveLayersUp);
     mActionMoveLayersDown->setEnabled(canMoveLayersDown);
+    mActionToggleVisibleLayer->setEnabled(currentLayer);
     mActionToggleOtherLayers->setEnabled(currentLayer && (hasNextLayer || hasPreviousLayer));
     mActionToggleLockOtherLayers->setEnabled(currentLayer && (hasNextLayer || hasPreviousLayer));
     mActionRemoveLayers->setEnabled(!selectedLayers.isEmpty());
